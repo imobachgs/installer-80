@@ -1,5 +1,6 @@
 require "yast"
 require "y2packager/product"
+Yast.import "CommandLine"
 
 # YaST specific code lives under this namespace
 module Yast2
@@ -16,6 +17,10 @@ module Yast2
       def instance
         @instance ||= create_instance
       end
+    end
+
+    def initialize
+      Yast::Mode.SetUI("commandline")
     end
 
     # Return the list of known products
