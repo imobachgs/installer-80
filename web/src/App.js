@@ -1,9 +1,12 @@
+<<<<<<< HEAD
 import React, { useEffect } from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> 6587ccf ([web] Add a language selector component)
 import {
   ChakraProvider,
   Box,
   Text,
-  Link,
   VStack,
   Heading,
   Flex,
@@ -15,6 +18,7 @@ import {
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 import Category from './Category';
+import LanguageSelector from './LanguageSelector';
 
 // FIXME: improve how icons are managed
 import {
@@ -31,6 +35,7 @@ import {
 function App() {
   const dispatch = useInstallerDispatch();
   const { languages, products } = useInstallerState();
+  const [currentLanguage, setCurrentLanguage] = useState("en");
 
   useEffect(() => {
     loadLanguages(dispatch);
@@ -49,7 +54,9 @@ function App() {
             <Divider />
 
             <Category title="Language" icon={Languages}>
-              <Text>Spanish</Text>
+              <LanguageSelector
+                selected={currentLanguage}
+                onChange={setCurrentLanguage} />
             </Category>
 
             <Category title="Product" icon={Archive}>
