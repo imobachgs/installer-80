@@ -83,7 +83,7 @@ function loadDisks(dispatch) {
 }
 
 function loadOptions(dispatch) {
-  installerClient().getDisks().then(options => {
+  installerClient().getOptions().then(options => {
     dispatch({ type: actionTypes.LOAD_OPTIONS, payload: options })
   }).catch(console.error);
 }

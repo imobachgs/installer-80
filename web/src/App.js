@@ -32,8 +32,9 @@ import {
 
 function App() {
   const dispatch = useInstallerDispatch();
-  const { disks, languages = [], products } = useInstallerState();
+  const { disks, languages = [], products, options } = useInstallerState();
 
+  console.log("Options", options);
   console.log("Disks", disks);
   console.log("Languages", languages);
   console.log("Products", products);
