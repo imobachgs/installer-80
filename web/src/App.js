@@ -59,17 +59,25 @@ function App() {
 
             <Category title="Language" icon={Languages}>
               <LanguageSelector
-                value="en_US"
+                value={options.language}
                 options={languages}
-                onChange={(lang) => console.log("Selected language", lang)} />
+                onChange={(language) => setOptions({ language })} />
             </Category>
 
             <Category title="Target" icon={HardDrive}>
-              <TargetSelector value="/dev/sda" options={disks} />
+              <TargetSelector
+                value={options.disk || "SELECT ONE"}
+                options={disks}
+                onChange={(target) => setOptions({ target })}
+              />
             </Category>
 
             <Category title="Product" icon={Archive}>
-              <ProductSelector value="SELECT ONE" options={products} />
+              <ProductSelector
+                value={options.product || "SELECT ONE"}
+                options={products}
+                onChange={(product) => setOptions({ product })}
+              />
             </Category>
           </VStack>
 
