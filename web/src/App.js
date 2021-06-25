@@ -30,8 +30,7 @@ import {
 
 function App() {
   const dispatch = useInstallerDispatch();
-  const { disks, languages, products } = useInstallerState();
-  const [currentLanguage, setCurrentLanguage] = useState("en");
+  const { disks, languages = [], products } = useInstallerState();
 
   console.log("Disks", disks);
   console.log("Languages", languages);
@@ -57,8 +56,9 @@ function App() {
 
             <Category title="Language" icon={Languages}>
               <LanguageSelector
-                selected={currentLanguage}
-                onChange={setCurrentLanguage} />
+                value="en_US"
+                options={languages}
+                onChange={(lang) => console.log("Selected language", lang)} />
             </Category>
 
             <Category title="Product" icon={Archive}>
