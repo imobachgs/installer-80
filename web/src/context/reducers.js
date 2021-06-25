@@ -44,3 +44,15 @@ export function languagesReducer(state, action) {
     }
   }
 }
+
+export function disksReducer(state, action) {
+  switch (action.type) {
+    case actionTypes.LOAD_DISKS: {
+      return { ...action.payload }
+    }
+
+    default: {
+      return state;
+    }
+  }
+}

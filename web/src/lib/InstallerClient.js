@@ -35,4 +35,9 @@ export default class InstallerClient {
     const { data } = await axios.get(`${this.url}/languages.json`);
     return data.data;
   }
+
+  async getDisks() {
+    const { data } = await axios.get(`${this.url}/disks.json`);
+    return data.data;
+  }
 }

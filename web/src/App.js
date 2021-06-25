@@ -26,15 +26,20 @@ import {
 } from 'lucide-react';
 
 import {
-  useInstallerState, useInstallerDispatch, loadProducts, loadLanguages
+  useInstallerState, useInstallerDispatch, loadDisks, loadLanguages, loadProducts
 } from './context/installer';
 
 function App() {
   const dispatch = useInstallerDispatch();
-  const { languages, products } = useInstallerState();
+  const { disks, languages, products } = useInstallerState();
   const [currentLanguage, setCurrentLanguage] = useState("en");
 
+  console.log("Disks", disks);
+  console.log("Languages", languages);
+  console.log("Products", products);
+
   useEffect(() => {
+    loadDisks(dispatch);
     loadLanguages(dispatch);
     loadProducts(dispatch);
   }, []);

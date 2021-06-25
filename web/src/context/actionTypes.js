@@ -19,10 +19,12 @@
  * find current contact information at www.suse.com.
  */
 
-const LOAD_PRODUCTS = 'load_products';
+const LOAD_DISKS = 'load_disks';
 const LOAD_LANGUAGES = 'load_languages';
+const LOAD_PRODUCTS = 'load_products';
 
 export default {
-  LOAD_PRODUCTS,
-  LOAD_LANGUAGES
+  LOAD_DISKS,
+  LOAD_LANGUAGES,
+  LOAD_PRODUCTS
 };
