@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ChakraProvider,
   Box,
@@ -24,7 +24,19 @@ import {
   Play,
 } from 'lucide-react';
 
+import {
+  useInstallerState, useInstallerDispatch, loadProducts, loadLanguages
+} from './context/installer';
+
 function App() {
+  const dispatch = useInstallerDispatch();
+  const { languages, products } = useInstallerState();
+
+  useEffect(() => {
+    loadLanguages(dispatch);
+    loadProducts(dispatch);
+  }, []);
+
   return (
     <ChakraProvider theme={theme}>
         <Box minH="100vh" p={3}>
