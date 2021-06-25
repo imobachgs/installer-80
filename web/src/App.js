@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-import React, { useEffect } from 'react';
-=======
-import React, { useState } from 'react';
->>>>>>> 6587ccf ([web] Add a language selector component)
+import React, { useEffect, useState } from 'react';
+
 import {
   ChakraProvider,
   Box,
