@@ -16,6 +16,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 import Category from './Category';
 import LanguageSelector from './LanguageSelector';
+import TargetSelector from './TargetSelector';
 
 // FIXME: improve how icons are managed
 import {
@@ -61,12 +62,12 @@ function App() {
                 onChange={(lang) => console.log("Selected language", lang)} />
             </Category>
 
-            <Category title="Product" icon={Archive}>
-              <Text>microOS</Text>
+            <Category title="Target" icon={HardDrive}>
+              <TargetSelector value="/dev/sda" options={disks} />
             </Category>
 
-            <Category title="Target" icon={HardDrive}>
-              <Text>/dev/sda</Text>
+            <Category title="Product" icon={Archive}>
+              <Text>microOS</Text>
             </Category>
           </VStack>
 
