@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   Button,
@@ -23,19 +23,27 @@ export default function LanguageSelector({ value, options = {}, onChange = () =>
   const [language, setLanguage] = useState(value);
   const languages = Object.values(options);
 
+  // FIXME: find other way to keep installer option in sync while using the
+  // controlled React select#value=
+  // (https://reactjs.org/docs/forms.html#the-select-tag)
+  const open = () => {
+    setLanguage(value);
+    onOpen();
+  }
+
   const applyChanges = () => {
     onChange(language);
     onClose();
   }
 
   const label = () => {
-    if (languages.size == 0) {
+    if (languages.length == 0) {
       return value;
     }
 
-    const lang = languages.find(lang => lang.code == value)
+    const selectedLanguage = languages.find(lang => lang.id === value)
 
-    return lang ? lang.name : value;
+    return selectedLanguage ? selectedLanguage.name : value;
   }
 
   const buildSelector = () => {
@@ -56,7 +64,7 @@ export default function LanguageSelector({ value, options = {}, onChange = () =>
 
   return (
     <>
-      <Link color="teal" onClick={onOpen}>
+      <Link color="teal" onClick={open}>
         <Text fontSize="lg">{label()}</Text>
       </Link>
 

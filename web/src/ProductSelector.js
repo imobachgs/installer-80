@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   Button,
@@ -23,13 +23,21 @@ export default function ProductSelector({ value, options = {}, onChange = () => 
   const [product, setProduct] = useState(value);
   const products = Object.values(options);
 
+  // FIXME: find other way to keep installer option in sync while using the
+  // controlled React select#value=
+  // (https://reactjs.org/docs/forms.html#the-select-tag)
+  const open = () => {
+    setProduct(value);
+    onOpen();
+  }
+
   const applyChanges = () => {
     onChange(product);
     onClose();
   }
 
   const label = () => {
-    if (products.size == 0) {
+    if (products.length == 0) {
       return value;
     }
 
@@ -56,7 +64,7 @@ export default function ProductSelector({ value, options = {}, onChange = () => 
 
   return (
     <>
-      <Link color="teal" onClick={onOpen}>
+      <Link color="teal" onClick={open}>
         <Text fontSize="lg">{label()}</Text>
       </Link>
 

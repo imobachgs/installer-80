@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   Button,
@@ -22,6 +22,14 @@ export default function TargetSelector({ value, options = {}, onChange = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [target, setTarget] = useState(value);
   const targets = Object.values(options);
+
+  // FIXME: find other way to keep installer option in sync while using the
+  // controlled React select#value=
+  // (https://reactjs.org/docs/forms.html#the-select-tag)
+  const open = () => {
+    setTarget(value);
+    onOpen();
+  }
 
   const applyChanges = () => {
     onChange(target);
@@ -48,7 +56,7 @@ export default function TargetSelector({ value, options = {}, onChange = () => {
 
   return (
     <>
-      <Link color="teal" onClick={onOpen}>
+      <Link color="teal" onClick={open}>
         <Text fontSize="lg">{value}</Text>
       </Link>
 
