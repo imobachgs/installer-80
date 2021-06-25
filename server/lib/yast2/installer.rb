@@ -1,5 +1,6 @@
 require "yast"
 require "y2packager/product"
+require "y2storage"
 Yast.import "CommandLine"
 
 # YaST specific code lives under this namespace
@@ -65,7 +66,8 @@ module Yast2
     end
 
     def probe_storage
-      nil
+      manager = Y2Storage::StorageManager.instance
+      manager.probe
     end
   end
 end
