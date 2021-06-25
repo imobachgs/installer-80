@@ -67,7 +67,7 @@ export default function LanguageSelector({ value, options = {}, onChange = () =>
           <ModalCloseButton />
           <ModalBody>
             <FormControl id="language">
-              <FormLabel>Selet desired language</FormLabel>
+              <FormLabel>Select desired language</FormLabel>
               { buildSelector() }
               <FormHelperText>The selected language will be used for both, the installer
       and the installed system</FormHelperText>
