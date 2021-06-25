@@ -6,7 +6,7 @@ import {
   Text
 } from '@chakra-ui/react';
 
-export default function Category({ icon, title, description, ...rest }) {
+export default function Category({ icon, title, children, ...rest }) {
   // FIXME: improve how icons are managed
   const Icon = icon;
 
@@ -15,8 +15,8 @@ export default function Category({ icon, title, description, ...rest }) {
       <HStack spacing="1rem">
         <Icon size="48"/>
         <Box>
-          <Heading fontSize="xl">{title}</Heading>
-          <Text mt={4}>{description}</Text>
+          <Heading fontSize="xl" mb={2}>{title}</Heading>
+          { children }
         </Box>
       </HStack>
     </Box>

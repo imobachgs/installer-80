@@ -48,11 +48,21 @@ function App() {
             <Heading as="h1">Welcome to $INSTALLER-80</Heading>
             <Divider />
 
-            <Category title="Language" icon={Languages} description="Spanish" />
-            <Category title="Product" icon={Archive} description="microOS" />
-            <Category title="Target" icon={HardDrive} description="/dev/sda" />
-            <Category title="Bootloader" icon={Play} description="Grub2" />
+            <Category title="Language" icon={Languages}>
+              <Text>Spanish</Text>
+            </Category>
 
+            <Category title="Product" icon={Archive}>
+              <Text>microOS</Text>
+            </Category>
+
+            <Category title="Target" icon={HardDrive}>
+              <Text>/dev/sda</Text>
+            </Category>
+
+            <Category title="Bootloader" icon={Play}>
+              <Text>Grub2</Text>
+            </Category>
           </VStack>
 
           <Flex p={20}>
