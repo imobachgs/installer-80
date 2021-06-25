@@ -22,7 +22,6 @@ import {
   Archive,
   HardDrive,
   Languages,
-  Play,
 } from 'lucide-react';
 
 import {
@@ -68,10 +67,6 @@ function App() {
 
             <Category title="Target" icon={HardDrive}>
               <Text>/dev/sda</Text>
-            </Category>
-
-            <Category title="Bootloader" icon={Play}>
-              <Text>Grub2</Text>
             </Category>
           </VStack>
 
