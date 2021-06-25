@@ -17,6 +17,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Category from './Category';
 import LanguageSelector from './LanguageSelector';
 import TargetSelector from './TargetSelector';
+import ProductSelector from './ProductSelector';
 
 // FIXME: improve how icons are managed
 import {
@@ -67,7 +68,7 @@ function App() {
             </Category>
 
             <Category title="Product" icon={Archive}>
-              <Text>microOS</Text>
+              <ProductSelector value="SELECT ONE" options={products} />
             </Category>
           </VStack>
 
