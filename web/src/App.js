@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 
 import {
-  useInstallerState, useInstallerDispatch, loadDisks, loadLanguages, loadProducts
+  useInstallerState, useInstallerDispatch, loadDisks, loadLanguages, loadProducts, loadOptions, setOptions
 } from './context/installer';
 
 function App() {
@@ -42,6 +42,7 @@ function App() {
     loadDisks(dispatch);
     loadLanguages(dispatch);
     loadProducts(dispatch);
+    loadOptions(dispatch);
   }, []);
 
   return (

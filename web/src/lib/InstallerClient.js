@@ -40,4 +40,15 @@ export default class InstallerClient {
     const { data } = await axios.get(`${this.url}/disks.json`);
     return data.data;
   }
+
+  async getOptions() {
+    const { data } = await axios.get(`${this.url}/options.json`);
+    return data.data;
+  }
+
+  async setOptions(opts) {
+    // TODO: return updated options
+    // NOTE: should we use 'patch' instead?
+    return await axios.put(`${this.url}/options.json`, { options: opts });
+  }
 }

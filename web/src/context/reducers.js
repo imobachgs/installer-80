@@ -56,3 +56,15 @@ export function disksReducer(state, action) {
     }
   }
 }
+
+export function optionsReducer(state, action) {
+  switch (action.type) {
+    case actionTypes.LOAD_OPTIONS: {
+      return { ...action.payload }
+    }
+
+    default: {
+      return state;
+    }
+  }
+}

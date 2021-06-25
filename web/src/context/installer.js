@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { disksReducer, languagesReducer, productsReducer } from './reducers';
+import { disksReducer, languagesReducer, productsReducer, optionsReducer } from './reducers';
 import useRootReducer from 'use-root-reducer';
 import InstallerClient from '../lib/InstallerClient';
 import actionTypes from './actionTypes';
@@ -51,7 +51,8 @@ function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
     disks: React.useReducer(disksReducer, []),
     languages: React.useReducer(languagesReducer, []),
-    products: React.useReducer(productsReducer, [])
+    products: React.useReducer(productsReducer, []),
+    options: React.useReducer(optionsReducer, [])
   });
 
   return (
@@ -81,6 +82,17 @@ function loadDisks(dispatch) {
   }).catch(console.error);
 }
 
+function loadOptions(dispatch) {
+  installerClient().getDisks().then(options => {
+    dispatch({ type: actionTypes.LOAD_OPTIONS, payload: options })
+  }).catch(console.error);
+}
+
+function setOptions(opts) {
+  console.log("OPTS=", opts);
+  installerClient().setOptions(opts);
+}
+
 /**
  * FIXME: needed to use a function in order to delay building the object and
  * make the tests to work
@@ -99,5 +111,7 @@ export {
   useInstallerDispatch,
   loadDisks,
   loadLanguages,
-  loadProducts
+  loadProducts,
+  loadOptions,
+  setOptions
 };

@@ -21,10 +21,12 @@
 
 const LOAD_DISKS = 'load_disks';
 const LOAD_LANGUAGES = 'load_languages';
+const LOAD_OPTIONS = 'load_options';
 const LOAD_PRODUCTS = 'load_products';
 
 export default {
   LOAD_DISKS,
   LOAD_LANGUAGES,
+  LOAD_OPTIONS,
   LOAD_PRODUCTS
 };

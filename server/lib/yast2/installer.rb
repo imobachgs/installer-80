@@ -1,4 +1,5 @@
 require "yast"
+require "yast2/installer_options"
 require "y2packager/product"
 require "y2storage"
 Yast.import "CommandLine"
@@ -20,8 +21,11 @@ module Yast2
       end
     end
 
+    attr_reader :options
+
     def initialize
       Yast::Mode.SetUI("commandline")
+      @options = Yast2::InstallerOptions.new
     end
 
     # Return the list of known products

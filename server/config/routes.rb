@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resource :options, only: [:show, :update]
   resources :disks, only: :index
   resources :languages, only: :index
   resources :products, only: :index
