@@ -36,7 +36,11 @@ export function productsReducer(state, action) {
 export function languagesReducer(state, action) {
   switch (action.type) {
     case actionTypes.LOAD_LANGUAGES: {
-      return { ...action.payload }
+      return { ...state, languages: action.payload }
+    }
+
+    case actionTypes.SET_OPTIONS: {
+      return { ...state, language: (action.payload.language || state.language) }
     }
 
     default: {
@@ -48,18 +52,6 @@ export function languagesReducer(state, action) {
 export function disksReducer(state, action) {
   switch (action.type) {
     case actionTypes.LOAD_DISKS: {
-      return { ...action.payload }
-    }
-
-    default: {
-      return state;
-    }
-  }
-}
-
-export function optionsReducer(state, action) {
-  switch (action.type) {
-    case actionTypes.LOAD_OPTIONS: {
       return { ...action.payload }
     }
 

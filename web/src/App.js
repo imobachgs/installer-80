@@ -32,11 +32,10 @@ import {
 
 function App() {
   const dispatch = useInstallerDispatch();
-  const { disks, languages = [], products, options } = useInstallerState();
+  const { disks, l10n, products, options } = useInstallerState();
 
   console.log("Options", options);
   console.log("Disks", disks);
-  console.log("Languages", languages);
   console.log("Products", products);
 
   useEffect(() => {
@@ -59,9 +58,9 @@ function App() {
 
             <Category title="Language" icon={Languages}>
               <LanguageSelector
-                value={options.language}
-                options={languages}
-                onChange={(language) => setOptions({ language })} />
+                value={l10n.language}
+                options={l10n.languages}
+                onChange={(language) => setOptions({ language }, dispatch)} />
             </Category>
 
             <Category title="Target" icon={HardDrive}>

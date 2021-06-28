@@ -18,10 +18,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 
-export default function LanguageSelector({ value, options = {}, onChange = () => {} }) {
+export default function LanguageSelector({ value, options = [], onChange = () => {} }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [language, setLanguage] = useState(value);
-  const languages = Object.values(options);
 
   // FIXME: find other way to keep installer option in sync while using the
   // controlled React select#value=
@@ -37,17 +36,17 @@ export default function LanguageSelector({ value, options = {}, onChange = () =>
   }
 
   const label = () => {
-    if (languages.length == 0) {
+    if (options.length == 0) {
       return value;
     }
 
-    const selectedLanguage = languages.find(lang => lang.id === value)
+    const selectedLanguage = options.find(lang => lang.id === value)
 
     return selectedLanguage ? selectedLanguage.name : value;
   }
 
   const buildSelector = () => {
-    const selectorOptions = languages.map(lang => (
+    const selectorOptions = options.map(lang => (
       <option key={lang.id} value={lang.id}>
         {lang.name}
       </option>

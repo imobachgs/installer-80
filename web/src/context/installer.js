@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { disksReducer, languagesReducer, productsReducer, optionsReducer } from './reducers';
+import { disksReducer, languagesReducer, productsReducer } from './reducers';
 import useRootReducer from 'use-root-reducer';
 import InstallerClient from '../lib/InstallerClient';
 import actionTypes from './actionTypes';
@@ -50,9 +50,8 @@ function useInstallerDispatch() {
 function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
     disks: React.useReducer(disksReducer, []),
-    languages: React.useReducer(languagesReducer, []),
-    products: React.useReducer(productsReducer, []),
-    options: React.useReducer(optionsReducer, [])
+    l10n: React.useReducer(languagesReducer, { languages: [], language: null }),
+    products: React.useReducer(productsReducer, [])
   });
 
   return (
@@ -84,13 +83,14 @@ function loadDisks(dispatch) {
 
 function loadOptions(dispatch) {
   installerClient().getOptions().then(options => {
-    dispatch({ type: actionTypes.LOAD_OPTIONS, payload: options })
+    dispatch({ type: actionTypes.SET_OPTIONS, payload: options })
   }).catch(console.error);
 }
 
-function setOptions(opts) {
-  console.log("OPTS=", opts);
-  installerClient().setOptions(opts);
+function setOptions(options, dispatch) {
+  installerClient().setOptions(options).then(() => {
+    dispatch({ type: actionTypes.SET_OPTIONS, payload: options });
+  });
 }
 
 /**
