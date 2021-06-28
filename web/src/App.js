@@ -27,21 +27,17 @@ import {
 } from 'lucide-react';
 
 import {
-  useInstallerState, useInstallerDispatch, loadDisks, loadLanguages, loadProducts, loadOptions, setOptions
+  useInstallerState, useInstallerDispatch, loadStorage, loadL10n, loadSoftware, setOptions, loadOptions
 } from './context/installer';
 
 function App() {
   const dispatch = useInstallerDispatch();
-  const { disks, l10n, products, options } = useInstallerState();
-
-  console.log("Options", options);
-  console.log("Disks", disks);
-  console.log("Products", products);
+  const { storage, l10n, software } = useInstallerState();
 
   useEffect(() => {
-    loadDisks(dispatch);
-    loadLanguages(dispatch);
-    loadProducts(dispatch);
+    loadStorage(dispatch);
+    loadL10n(dispatch);
+    loadSoftware(dispatch);
     loadOptions(dispatch);
   }, []);
 
@@ -65,17 +61,17 @@ function App() {
 
             <Category title="Target" icon={HardDrive}>
               <TargetSelector
-                value={options.disk || "SELECT ONE"}
-                options={disks}
-                onChange={(target) => setOptions({ target })}
+                value={storage.device || "Select a device"}
+                options={storage.devices}
+                onChange={(device) => setOptions({ device }, dispatch)}
               />
             </Category>
 
             <Category title="Product" icon={Archive}>
               <ProductSelector
-                value={options.product || "SELECT ONE"}
-                options={products}
-                onChange={(product) => setOptions({ product })}
+                value={software.product || "Select a product"}
+                options={software.products}
+                onChange={(product) => setOptions({ product }, dispatch)}
               />
             </Category>
           </VStack>

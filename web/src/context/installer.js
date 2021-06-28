@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { disksReducer, languagesReducer, productsReducer } from './reducers';
+import { storageReducer, l10nReducer, softwareReducer } from './reducers';
 import useRootReducer from 'use-root-reducer';
 import InstallerClient from '../lib/InstallerClient';
 import actionTypes from './actionTypes';
@@ -49,9 +49,9 @@ function useInstallerDispatch() {
 
 function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
-    disks: React.useReducer(disksReducer, []),
-    l10n: React.useReducer(languagesReducer, { languages: [], language: null }),
-    products: React.useReducer(productsReducer, [])
+    storage: React.useReducer(storageReducer, { devices: [], device: null }),
+    l10n: React.useReducer(l10nReducer, { languages: [], language: null }),
+    software: React.useReducer(softwareReducer, { products: [], product: null })
   });
 
   return (
@@ -63,27 +63,21 @@ function InstallerProvider({ children }) {
   );
 }
 
-function loadProducts(dispatch) {
+function loadSoftware(dispatch) {
   installerClient().getProducts().then(products => {
     dispatch({ type: actionTypes.LOAD_PRODUCTS, payload: products })
   }).catch(console.error);
 }
 
-function loadLanguages(dispatch) {
+function loadL10n(dispatch) {
   installerClient().getLanguages().then(languages => {
     dispatch({ type: actionTypes.LOAD_LANGUAGES, payload: languages })
   }).catch(console.error);
 }
 
-function loadDisks(dispatch) {
+function loadStorage(dispatch) {
   installerClient().getDisks().then(disks => {
-    dispatch({ type: actionTypes.LOAD_DISKS, payload: disks })
-  }).catch(console.error);
-}
-
-function loadOptions(dispatch) {
-  installerClient().getOptions().then(options => {
-    dispatch({ type: actionTypes.SET_OPTIONS, payload: options })
+    dispatch({ type: actionTypes.LOAD_DEVICES, payload: disks })
   }).catch(console.error);
 }
 
@@ -91,6 +85,12 @@ function setOptions(options, dispatch) {
   installerClient().setOptions(options).then(() => {
     dispatch({ type: actionTypes.SET_OPTIONS, payload: options });
   });
+}
+
+function loadOptions(dispatch) {
+  installerClient().getOptions().then(options => {
+    dispatch({ type: actionTypes.SET_OPTIONS, payload: options });
+  }).catch(console.error);
 }
 
 /**
@@ -109,9 +109,9 @@ export {
   InstallerProvider,
   useInstallerState,
   useInstallerDispatch,
-  loadDisks,
-  loadLanguages,
-  loadProducts,
-  loadOptions,
-  setOptions
+  loadStorage,
+  loadL10n,
+  loadSoftware,
+  setOptions,
+  loadOptions
 };

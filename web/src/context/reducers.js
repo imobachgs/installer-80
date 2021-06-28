@@ -21,10 +21,14 @@
 
 import actionTypes from './actionTypes';
 
-export function productsReducer(state, action) {
+export function softwareReducer(state, action) {
   switch (action.type) {
     case actionTypes.LOAD_PRODUCTS: {
       return { ...action.payload }
+    }
+
+    case actionTypes.SET_OPTIONS: {
+      return { ...state, product: (action.payload.product || state.product) }
     }
 
     default: {
@@ -33,7 +37,7 @@ export function productsReducer(state, action) {
   }
 }
 
-export function languagesReducer(state, action) {
+export function l10nReducer(state, action) {
   switch (action.type) {
     case actionTypes.LOAD_LANGUAGES: {
       return { ...state, languages: action.payload }
@@ -49,10 +53,14 @@ export function languagesReducer(state, action) {
   }
 }
 
-export function disksReducer(state, action) {
+export function storageReducer(state, action) {
   switch (action.type) {
-    case actionTypes.LOAD_DISKS: {
-      return { ...action.payload }
+    case actionTypes.LOAD_DEVICES: {
+      return { ...state, devices: action.payload }
+    }
+
+    case actionTypes.SET_OPTIONS: {
+      return { ...state, device: (action.payload.device || state.device) }
     }
 
     default: {
