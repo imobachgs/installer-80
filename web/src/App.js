@@ -18,6 +18,7 @@ import Category from './Category';
 import LanguageSelector from './LanguageSelector';
 import TargetSelector from './TargetSelector';
 import ProductSelector from './ProductSelector';
+import Proposal from './Proposal';
 
 // FIXME: improve how icons are managed
 import {
@@ -40,6 +41,12 @@ function App() {
     loadSoftware(dispatch);
     loadOptions(dispatch);
   }, []);
+
+  const proposal = [
+    {"mount":"/boot/efi","device":"/dev/sda1","type":"vfat","size":536870912},
+    {"mount":"/","device":"/dev/sda2","type":"btrfs","size":997518737408},
+    {"mount":"swap","device":"/dev/sda4","type":"swap","size":2148212224}
+  ];
 
   return (
     <ChakraProvider theme={theme}>
@@ -65,6 +72,7 @@ function App() {
                 options={storage.devices}
                 onChange={(device) => setOptions({ device }, dispatch)}
               />
+              <Proposal data={proposal}/>
             </Category>
 
             <Category title="Product" icon={Archive}>
