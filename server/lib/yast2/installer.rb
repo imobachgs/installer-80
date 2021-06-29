@@ -58,6 +58,31 @@ module Yast2
       probe_storage
     end
 
+    def propose
+      propose_storage
+    end
+
+    def disk_name
+      @disk_name ||= storage_manager.probed.disks.first&.name
+    end
+
+    def disk_name=(name)
+      @disk_name = name
+      propose_storage
+    end
+
+    def disks
+      storage_manager.probed.disks
+    end
+
+    def storage_probed
+      storage_manager.probed
+    end
+
+    def storage_proposal
+      storage_manager.proposal&.devices
+    end
+
     private
 
     def probe_software
@@ -70,8 +95,28 @@ module Yast2
     end
 
     def probe_storage
-      manager = Y2Storage::StorageManager.instance
-      manager.probe
+      storage_manager.probe
+    end
+
+    def propose_storage
+      return unless disk_name
+
+      settings = Y2Storage::ProposalSettings.new_for_current_product
+      settings.candidate_devices = [disk_name]
+
+      # FIXME: clean up the disks
+      clean_probed = storage_probed.clone
+      clean_probed.disks.each(&:remove_descendants)
+
+      proposal = Y2Storage::GuidedProposal.initial(
+        devicegraph: clean_probed,
+        settings: settings
+      )
+      storage_manager.proposal = proposal
+    end
+
+    def storage_manager
+      @storage_manager ||= Y2Storage::StorageManager.instance
     end
   end
 end
