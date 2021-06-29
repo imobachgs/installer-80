@@ -9,6 +9,8 @@ import {
   Td
 } from '@chakra-ui/react';
 
+import filesize from 'filesize';
+
 const Proposal = ({data = []}) => {
   const renderProposal = () => {
     return data.map(p => {
@@ -17,7 +19,7 @@ const Proposal = ({data = []}) => {
           <Td>{p.mount}</Td>
           <Td>{p.type}</Td>
           <Td>{p.device}</Td>
-          <Td isNumeric>{p.size}</Td>
+          <Td isNumeric>{filesize(p.size)}</Td>
         </Tr>
       );
     })
