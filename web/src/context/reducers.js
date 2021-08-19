@@ -55,8 +55,8 @@ export function l10nReducer(state, action) {
 
 export function storageReducer(state, action) {
   switch (action.type) {
-    case actionTypes.LOAD_DEVICES: {
-      return { ...state, devices: action.payload }
+    case actionTypes.LOAD_STORAGE: {
+      return { ...state, ...action.payload }
     }
 
     case actionTypes.SET_OPTIONS: {

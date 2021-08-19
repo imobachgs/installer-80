@@ -49,7 +49,7 @@ function useInstallerDispatch() {
 
 function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
-    storage: React.useReducer(storageReducer, { devices: [], device: null }),
+    storage: React.useReducer(storageReducer, { proposal: [], disks: [], device: null }),
     l10n: React.useReducer(l10nReducer, { languages: [], language: null }),
     software: React.useReducer(softwareReducer, { products: [], product: null })
   });
@@ -76,8 +76,8 @@ function loadL10n(dispatch) {
 }
 
 function loadStorage(dispatch) {
-  installerClient().getDisks().then(disks => {
-    dispatch({ type: actionTypes.LOAD_DEVICES, payload: disks })
+  installerClient().getStorage().then(storage => {
+    dispatch({ type: actionTypes.LOAD_STORAGE, payload: storage })
   }).catch(console.error);
 }
 

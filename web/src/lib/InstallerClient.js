@@ -36,8 +36,8 @@ export default class InstallerClient {
     return data.data;
   }
 
-  async getDisks() {
-    const { data } = await axios.get(`${this.url}/disks.json`);
+  async getStorage() {
+    const { data } = await axios.get(`${this.url}/storage.json`);
     return data.data;
   }
 

@@ -42,12 +42,6 @@ function App() {
     loadOptions(dispatch);
   }, []);
 
-  const proposal = [
-    {"mount":"/boot/efi","device":"/dev/sda1","type":"vfat","size":536870912},
-    {"mount":"/","device":"/dev/sda2","type":"btrfs","size":997518737408},
-    {"mount":"swap","device":"/dev/sda4","type":"swap","size":2148212224}
-  ];
-
   return (
     <ChakraProvider theme={theme}>
         <Box minH="100vh" p={3}>
@@ -69,10 +63,10 @@ function App() {
             <Category title="Target" icon={HardDrive}>
               <TargetSelector
                 value={storage.device || "Select a device"}
-                options={storage.devices}
-                onChange={(device) => setOptions({ device }, dispatch)}
+                options={storage.disks}
+                onChange={device => setOptions({ device }, dispatch)}
               />
-              <Proposal data={proposal}/>
+              <Proposal data={storage.proposal}/>
             </Category>
 
             <Category title="Product" icon={Archive}>
