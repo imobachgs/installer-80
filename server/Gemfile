@@ -27,6 +27,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rack-cors'
 
-# Required by YaST
-gem 'fast_gettext'
-gem 'cheetah'
+# Required to communicate with YaST
+gem 'ruby-dbus'

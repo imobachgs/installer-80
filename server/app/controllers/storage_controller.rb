@@ -1,13 +1,12 @@
-require "y2storage"
-
 class StorageController < ApplicationController
   def show
-    probed = Yast2::Installer.instance.storage_probed
-    disks = probed.disks.map { |d| { name: d.name, model: d.model } }
-    proposal = Yast2::Installer.instance.storage_proposal
-    disk_name = Yast2::Installer.instance.disk_name
+    # TODO
+    # probed = Yast2::Installer.instance.storage_probed
+    # disks = probed.disks.map { |d| { name: d.name, model: d.model } }
+    # proposal = Yast2::Installer.instance.storage_proposal
+    # disk_name = Yast2::Installer.instance.disk_name
 
-    render json: { data: { proposal: simple_devicegraph(proposal), disks: disks, disk: disk_name } }
+    # render json: { data: { proposal: simple_devicegraph(proposal), disks: disks, disk: disk_name } }
   end
 
   def update

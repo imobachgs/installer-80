@@ -1,6 +1,5 @@
 class ProductsController < ApplicationController
   def index
-    @products = Yast2::Installer.instance.products
-    render json: { data: @products }
+    render json: { data: installer_client.products }
   end
 end

@@ -1,7 +1,7 @@
 class OptionsController < ApplicationController
   def show
-    options = Yast2::Installer.instance.options
-    render json: { data: options }
+    # FIXME: options = Yast2::InstallerClient.instance.options
+    render json: { data: { language: "en_US" } }
   end
 
   def update
