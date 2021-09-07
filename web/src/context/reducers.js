@@ -24,7 +24,7 @@ import actionTypes from './actionTypes';
 export function softwareReducer(state, action) {
   switch (action.type) {
     case actionTypes.LOAD_PRODUCTS: {
-      return { ...action.payload }
+      return { ...state, products: action.payload }
     }
 
     case actionTypes.SET_OPTIONS: {
@@ -56,7 +56,7 @@ export function l10nReducer(state, action) {
 export function storageReducer(state, action) {
   switch (action.type) {
     case actionTypes.LOAD_STORAGE: {
-      return { ...state, ...action.payload }
+      return { ...state, proposal: action.payload }
     }
 
     case actionTypes.SET_OPTIONS: {

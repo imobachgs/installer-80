@@ -28,22 +28,22 @@ export default class InstallerClient {
 
   async getProducts() {
     const { data } = await axios.get(`${this.url}/products.json`);
-    return data.data;
+    return data;
   }
 
   async getLanguages() {
     const { data } = await axios.get(`${this.url}/languages.json`);
-    return data.data;
+    return data;
   }
 
   async getStorage() {
     const { data } = await axios.get(`${this.url}/storage.json`);
-    return data.data;
+    return data;
   }
 
   async getOptions() {
     const { data } = await axios.get(`${this.url}/options.json`);
-    return data.data;
+    return data;
   }
 
   async setOptions(opts) {
