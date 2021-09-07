@@ -18,7 +18,7 @@ Of course, if you press the `Install` button, nothing happens :smiley:.
 
 ## D-Bus service
 
-A small YaST D-Bus service is included in the `dbus/` directory. Beware that it must ruin as *root*
+A small YaST D-Bus service is included in the `dbus/` directory. Beware that it must run as *root*
 (like YaST does) to do hardware probing and so on. Additionally, you must tell `dbus` about this
 service by just copying `dbus/share/dbus-yast2.conf` to `/etc/dbus-1/system.d/yast2.conf`.
 
