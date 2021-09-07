@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 
 import {
-  useInstallerState, useInstallerDispatch, loadStorage, loadL10n, loadSoftware, setOptions, loadOptions
+  useInstallerState, useInstallerDispatch, loadStorage, loadL10n, loadSoftware, loadDisks, setOptions, loadOptions
 } from './context/installer';
 
 function App() {
@@ -37,6 +37,7 @@ function App() {
 
   useEffect(() => {
     loadStorage(dispatch);
+    loadDisks(dispatch);
     loadL10n(dispatch);
     loadSoftware(dispatch);
     loadOptions(dispatch);

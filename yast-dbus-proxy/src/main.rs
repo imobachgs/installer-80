@@ -38,6 +38,17 @@ async fn get_languages(mut _req: Request<()>) -> tide::Result {
        .build())
 }
 
+async fn get_disks(mut _req: Request<()>) -> tide::Result {
+    let client = InstallerClient::new()?;
+    let disks = client.get_disks()?;
+    let json_body = serde_json::to_string(&disks)?;
+
+    Ok(Response::builder(StatusCode::Ok)
+       .body(json_body)
+       .content_type(mime::JSON)
+       .build())
+}
+
 async fn get_storage(mut _req: Request<()>) -> tide::Result {
     let client = InstallerClient::new()?;
     let storage = client.get_storage()?;
@@ -72,6 +83,7 @@ async fn main() -> tide::Result<()> {
     app.at("/products.json").get(get_products);
     app.at("/languages.json").get(get_languages);
     app.at("/storage.json").get(get_storage);
+    app.at("/disks.json").get(get_disks);
     app.at("/options.json").get(get_options);
     app.listen("localhost:3000").await?;
     Ok(())

@@ -58,6 +58,18 @@ module Yast2
           end
           [proposal]
         end
+
+        dbus_method :GetDisks, "out disks:aa{ss}" do
+          disks = installer.disks.map do |disk|
+            {
+              "name"  => disk.name,
+              "model" => disk.model,
+              "size"  => disk.size.to_human_string
+            }
+          end
+
+          [disks]
+        end
       end
     end
   end

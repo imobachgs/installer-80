@@ -81,6 +81,12 @@ function loadStorage(dispatch) {
   }).catch(console.error);
 }
 
+function loadDisks(dispatch) {
+  installerClient().getDisks().then(disks => {
+    dispatch({ type: actionTypes.LOAD_DISKS, payload: disks })
+  }).catch(console.error);
+}
+
 function setOptions(options, dispatch) {
   installerClient().setOptions(options).then(() => {
     dispatch({ type: actionTypes.SET_OPTIONS, payload: options });
@@ -112,6 +118,7 @@ export {
   loadStorage,
   loadL10n,
   loadSoftware,
+  loadDisks,
   setOptions,
   loadOptions
 };

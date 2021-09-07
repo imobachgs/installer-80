@@ -6,6 +6,7 @@ use std::collections::HashMap;
 type LanguagesMap = HashMap<String,Vec<String>>;
 type ProductsList = Vec<HashMap<String,String>>;
 type StorageProposal = Vec<HashMap<String,String>>;
+type DisksList = Vec<HashMap<String,String>>;
 type OptionsMap = HashMap<String, String>;
 
 pub struct InstallerClient {
@@ -34,6 +35,11 @@ impl InstallerClient {
         Ok(storage)
     }
 
+    pub fn get_disks(&self) -> Result<DisksList, dbus::Error> {
+        let (disks,): (DisksList,) = self.method_call("GetDisks")?;
+        Ok(disks)
+    }
+
     pub fn get_options(&self) -> Result<OptionsMap, dbus::Error> {
         let mut options: OptionsMap = HashMap::new();
         options.insert(String::from("language"), String::from("en_US"));
@@ -46,5 +52,4 @@ impl InstallerClient {
         );
         proxy.method_call("org.opensuse.YaST.Installer", method, ())
     }
-
 }

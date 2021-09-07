@@ -59,6 +59,10 @@ export function storageReducer(state, action) {
       return { ...state, proposal: action.payload }
     }
 
+    case actionTypes.LOAD_DISKS: {
+      return { ...state, disks: action.payload }
+    }
+
     case actionTypes.SET_OPTIONS: {
       return { ...state, device: (action.payload.device || state.device) }
     }
