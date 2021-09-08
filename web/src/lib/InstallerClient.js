@@ -52,8 +52,6 @@ export default class InstallerClient {
   }
 
   async setOptions(opts) {
-    // TODO: return updated options
-    // NOTE: should we use 'patch' instead?
-    return await axios.put(`${this.url}/options.json`, { options: opts });
+    return await axios.put(`${this.url}/options.json`, opts);
   }
 }

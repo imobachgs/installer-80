@@ -27,6 +27,9 @@ module Yast2
     class Installer < ::DBus::Object
       attr_reader :installer
 
+      PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties"
+      INSTALLER_INTERFACE = "org.opensuse.YaST.Installer"
+
       # @param installer [Yast2::Installer] YaST installer instance
       # @param args [Array<Object>] ::DBus::Object arguments
       def initialize(installer, *args)
@@ -34,7 +37,7 @@ module Yast2
         super(*args)
       end
 
-      dbus_interface "org.opensuse.YaST.Installer" do
+      dbus_interface INSTALLER_INTERFACE do
         dbus_method :GetLanguages, "out langs:a{sas}" do
           [installer.languages]
         end
@@ -70,6 +73,53 @@ module Yast2
 
           [disks]
         end
+      end
+
+      dbus_interface PROPERTY_INTERFACE do
+        dbus_method :Get, "in interface:s, in propname:s, out value:v" do |interface, propname|
+          if interface != INSTALLER_INTERFACE
+            raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
+                  "Interface '#{interface}' not found on object '{@path}'"
+          end
+
+          begin
+            installer.send("#{propname}")
+          rescue NoMethodError
+            raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
+                  "Property '#{interface}.#{propname}' not found on object '#{@path}'"
+          end
+
+          value
+        end
+
+        dbus_method :Set, "in interface:s, in propname:s, in value:v" do |interface, propname, value|
+          unless interface == INSTALLER_INTERFACE
+            raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
+                  "Interface '#{interface}' not found on object '#{@path}'"
+          end
+
+          begin
+            installer.send("#{propname}=", value)
+            self.PropertiesChanged(interface, { propname => value }, [])
+          rescue Yast2::Installer::InvalidValue
+            raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
+                  "Value '#{value}' not valid for '#{interface}.#{propname}' on object '#{@path}'"
+          rescue NoMethodError
+            raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
+                  "Property '#{interface}.#{propname}' not found on object '#{@path}'"
+          end
+        end
+
+        dbus_method :GetAll, "in interface:s, out value:a{sv}" do |interface|
+          unless interface == INSTALLER_INTERFACE
+            raise DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
+                  "Interface '#{interface}' not found on object '#{@path}'"
+          end
+
+          [installer.options]
+        end
+
+        dbus_signal :PropertiesChanged, "interface:s, changed_properties:a{sv}, invalidated_properties:as"
       end
     end
   end

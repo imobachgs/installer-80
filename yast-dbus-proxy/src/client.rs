@@ -1,5 +1,5 @@
-use dbus::blocking::{Connection};
-use dbus::arg::ReadAll;
+use dbus::blocking::Connection;
+use dbus::arg::{ReadAll,Variant};
 use std::time::Duration;
 use std::collections::HashMap;
 
@@ -7,7 +7,7 @@ type LanguagesMap = HashMap<String,Vec<String>>;
 type ProductsList = Vec<HashMap<String,String>>;
 type StorageProposal = Vec<HashMap<String,String>>;
 type DisksList = Vec<HashMap<String,String>>;
-type OptionsMap = HashMap<String, String>;
+type OptionsMap = HashMap<String,Variant<String>>;
 
 pub struct InstallerClient {
     conn: Connection,
@@ -41,9 +41,19 @@ impl InstallerClient {
     }
 
     pub fn get_options(&self) -> Result<OptionsMap, dbus::Error> {
-        let mut options: OptionsMap = HashMap::new();
-        options.insert(String::from("language"), String::from("en_US"));
+        let proxy = self.conn.with_proxy(
+            "org.opensuse.YaST", "/org/opensuse/YaST/Installer", Duration::from_millis(5000)
+        );
+        let (options,) = proxy.method_call("org.freedesktop.DBus.Properties", "GetAll", ("org.opensuse.YaST.Installer",))?;
         Ok(options)
+    }
+
+    pub fn set_option(&self, name: &str, value: &str) -> Result<(), dbus::Error> {
+        let proxy = self.conn.with_proxy(
+            "org.opensuse.YaST", "/org/opensuse/YaST/Installer", Duration::from_millis(5000)
+        );
+        proxy.method_call("org.freedesktop.DBus.Properties", "Set", ("org.opensuse.YaST.Installer", name, Variant(value)))?;
+        Ok(())
     }
 
     fn method_call<R: ReadAll>(&self, method: &str) -> Result<R, dbus::Error> {

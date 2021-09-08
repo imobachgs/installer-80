@@ -61,7 +61,6 @@ module Yast2
         installer = Yast2::Installer.new
         logger.info "Probing and proposing default options"
         installer.probe
-        installer.propose
         installer
       end
     end
