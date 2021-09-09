@@ -49,7 +49,7 @@ function useInstallerDispatch() {
 
 function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
-    storage: React.useReducer(storageReducer, { proposal: [], disks: [], device: null }),
+    storage: React.useReducer(storageReducer, { proposal: [], disks: [], disk: null }),
     l10n: React.useReducer(l10nReducer, { languages: [], language: null }),
     software: React.useReducer(softwareReducer, { products: [], product: null })
   });

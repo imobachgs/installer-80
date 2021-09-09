@@ -89,8 +89,8 @@ module Yast2
 
     def probe_storage
       storage_manager.probe
-      first_disk = storage_manager.probed.disks.first&.name
-      self.disk = first_disk
+      @disks = storage_manager.probed.disks
+      self.disk = @disks.first&.name
     end
 
     # @return [Boolean] true if success; false if failed

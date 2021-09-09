@@ -63,9 +63,9 @@ function App() {
 
             <Category title="Target" icon={HardDrive}>
               <TargetSelector
-                value={storage.device || "Select a device"}
+                value={storage.disk || "Select a device"}
                 options={storage.disks}
-                onChange={device => setOptions({ device }, dispatch)}
+                onChange={disk => setOptions({ disk }, dispatch)}
               />
               <Proposal data={storage.proposal}/>
             </Category>
