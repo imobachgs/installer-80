@@ -1,0 +1,16 @@
+[package]
+name = "yast-dbus-proxy"
+version = "0.1.0"
+authors = ["Imobach González Sosa <igonzalezsosa@suse.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde_json = "1.0"
+tide = "0.16.0"
+async-std = { version = "1.8.0", features = ["attributes"] }
+serde = { version = "1.0", features = ["derive"] }
+http-types = "2.12.0"
+tide-websockets = "0.4.0"
+zbus = "2.0.0-beta.6"

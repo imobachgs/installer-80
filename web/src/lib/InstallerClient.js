@@ -24,31 +24,41 @@ import axios from 'axios';
 export default class InstallerClient {
   constructor(url) {
     this.url = url;
+    const wsUrl = url.replace("http", "ws") + "/ws";
+    this.socket = new WebSocket(`${wsUrl}`);
+    this.socket.onclose = () => console.log("The socket was closed");
+  }
+
+  onMessage(handler) {
+    this.socket.addEventListener("message", handler);
   }
 
   async getProducts() {
     const { data } = await axios.get(`${this.url}/products.json`);
-    return data.data;
+    return data;
   }
 
   async getLanguages() {
     const { data } = await axios.get(`${this.url}/languages.json`);
-    return data.data;
+    return data;
   }
 
   async getStorage() {
     const { data } = await axios.get(`${this.url}/storage.json`);
-    return data.data;
+    return data;
+  }
+
+  async getDisks() {
+    const { data } = await axios.get(`${this.url}/disks.json`);
+    return data;
   }
 
   async getOptions() {
     const { data } = await axios.get(`${this.url}/options.json`);
-    return data.data;
+    return data;
   }
 
   async setOptions(opts) {
-    // TODO: return updated options
-    // NOTE: should we use 'patch' instead?
-    return await axios.put(`${this.url}/options.json`, { options: opts });
+    return await axios.put(`${this.url}/options.json`, opts);
   }
 }

@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 
 import {
-  useInstallerState, useInstallerDispatch, loadStorage, loadL10n, loadSoftware, setOptions, loadOptions
+  useInstallerState, useInstallerDispatch, loadStorage, loadL10n, loadSoftware, loadDisks, setOptions, loadOptions, registerWebSocketHandler
 } from './context/installer';
 
 function App() {
@@ -37,9 +37,17 @@ function App() {
 
   useEffect(() => {
     loadStorage(dispatch);
+    loadDisks(dispatch);
     loadL10n(dispatch);
     loadSoftware(dispatch);
     loadOptions(dispatch);
+    registerWebSocketHandler(event => {
+      console.log("WebSocket Event", event);
+      const { data } = event;
+      if (Object.keys(JSON.parse(data)).includes("disk")) {
+        loadStorage(dispatch);
+      }
+    });
   }, []);
 
   return (
@@ -62,9 +70,9 @@ function App() {
 
             <Category title="Target" icon={HardDrive}>
               <TargetSelector
-                value={storage.device || "Select a device"}
+                value={storage.disk || "Select a device"}
                 options={storage.disks}
-                onChange={device => setOptions({ device }, dispatch)}
+                onChange={disk => setOptions({ disk }, dispatch)}
               />
               <Proposal data={storage.proposal}/>
             </Category>

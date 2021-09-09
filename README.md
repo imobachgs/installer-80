@@ -16,18 +16,30 @@ Of course, if you press the `Install` button, nothing happens :smiley:.
 
 ## Starting the Installer
 
+## D-Bus service
+
+A small YaST D-Bus service is included in the `dbus/` directory. Beware that it must run as *root*
+(like YaST does) to do hardware probing and so on. Additionally, you must tell `dbus` about this
+service by just copying `dbus/share/dbus-yast2.conf` to `/etc/dbus-1/system.d/yast2.conf`.
+
+To run the service, type:
+
+        $ cd dbus
+        $ sudo rake run
+
 ## HTTP API
 
-At this point, the server needs to run as *root* (like YaST does) to be able to do hardware probing
-and so on. It is far from ideal, but we will work on that later.
+The HTTP API allows accessing to the YaST D-Bus service. It is written in Rust, so you will need to
+install the compiler. To start the server just type:
 
-        $ cd server
-        $ bundle install
-        $ sudo bundle exec rails s
+        $ cd yast-dbus-proxy
+        $ cargo run
 
 ## User Interface
+
+Now start the web-based user interface:
 
         $ cd web
         $ npm start
 
-Point your browser to https://localhost:3001.
+Point your browser to https://localhost:3001 and enjoy!

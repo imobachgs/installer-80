@@ -46,10 +46,9 @@ function useInstallerDispatch() {
   return context;
 }
 
-
 function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
-    storage: React.useReducer(storageReducer, { proposal: [], disks: [], device: null }),
+    storage: React.useReducer(storageReducer, { proposal: [], disks: [], disk: null }),
     l10n: React.useReducer(l10nReducer, { languages: [], language: null }),
     software: React.useReducer(softwareReducer, { products: [], product: null })
   });
@@ -81,6 +80,12 @@ function loadStorage(dispatch) {
   }).catch(console.error);
 }
 
+function loadDisks(dispatch) {
+  installerClient().getDisks().then(disks => {
+    dispatch({ type: actionTypes.LOAD_DISKS, payload: disks })
+  }).catch(console.error);
+}
+
 function setOptions(options, dispatch) {
   installerClient().setOptions(options).then(() => {
     dispatch({ type: actionTypes.SET_OPTIONS, payload: options });
@@ -91,6 +96,10 @@ function loadOptions(dispatch) {
   installerClient().getOptions().then(options => {
     dispatch({ type: actionTypes.SET_OPTIONS, payload: options });
   }).catch(console.error);
+}
+
+function registerWebSocketHandler(handler) {
+  installerClient().onMessage(handler);
 }
 
 /**
@@ -112,6 +121,8 @@ export {
   loadStorage,
   loadL10n,
   loadSoftware,
+  loadDisks,
   setOptions,
-  loadOptions
+  loadOptions,
+  registerWebSocketHandler
 };
