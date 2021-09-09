@@ -83,13 +83,11 @@ module Yast2
           end
 
           begin
-            installer.send("#{propname}")
+            installer.send("#{propname.downcase}")
           rescue NoMethodError
             raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
                   "Property '#{interface}.#{propname}' not found on object '#{@path}'"
           end
-
-          value
         end
 
         dbus_method :Set, "in interface:s, in propname:s, in value:v" do |interface, propname, value|
@@ -99,7 +97,7 @@ module Yast2
           end
 
           begin
-            installer.send("#{propname}=", value)
+            installer.send("#{propname.downcase}=", value)
             self.PropertiesChanged(interface, { propname => value }, [])
           rescue Yast2::Installer::InvalidValue
             raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
@@ -112,7 +110,7 @@ module Yast2
 
         dbus_method :GetAll, "in interface:s, out value:a{sv}" do |interface|
           unless interface == INSTALLER_INTERFACE
-            raise DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
+            raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
                   "Interface '#{interface}' not found on object '#{@path}'"
           end
 
