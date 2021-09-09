@@ -46,7 +46,6 @@ function useInstallerDispatch() {
   return context;
 }
 
-
 function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
     storage: React.useReducer(storageReducer, { proposal: [], disks: [], disk: null }),
@@ -99,6 +98,10 @@ function loadOptions(dispatch) {
   }).catch(console.error);
 }
 
+function registerWebSocketHandler(handler) {
+  installerClient().onMessage(handler);
+}
+
 /**
  * FIXME: needed to use a function in order to delay building the object and
  * make the tests to work
@@ -120,5 +123,6 @@ export {
   loadSoftware,
   loadDisks,
   setOptions,
-  loadOptions
+  loadOptions,
+  registerWebSocketHandler
 };

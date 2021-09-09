@@ -24,6 +24,13 @@ import axios from 'axios';
 export default class InstallerClient {
   constructor(url) {
     this.url = url;
+    const wsUrl = url.replace("http", "ws") + "/ws";
+    this.socket = new WebSocket(`${wsUrl}`);
+    this.socket.onclose = () => console.log("The socket was closed");
+  }
+
+  onMessage(handler) {
+    this.socket.addEventListener("message", handler);
   }
 
   async getProducts() {

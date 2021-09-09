@@ -2,7 +2,9 @@ use std::collections::HashMap;
 use tide::{Response,Request,http::mime,StatusCode};
 use tide::security::{CorsMiddleware, Origin};
 use http_types::headers::HeaderValue;
+use tide_websockets::WebSocket;
 use client::InstallerClient;
+use async_std::stream::StreamExt;
 
 mod client;
 
@@ -98,6 +100,37 @@ async fn main() -> tide::Result<()> {
     app.at("/disks.json").get(get_disks);
     app.at("/options.json").get(get_options);
     app.at("/options.json").put(set_options);
+    app.at("/ws")
+       .with(WebSocket::new(|_request, stream| async move {
+           // FIXME: integrate this code into the client and improve error handling
+           let connection = zbus::azync::Connection::system().await?;
+
+           let props = zbus::fdo::AsyncPropertiesProxy::builder(&connection)
+               .destination("org.opensuse.YaST")?
+               .path("/org/opensuse/YaST/Installer")?
+               .build().await?;
+
+           let mut props_changed_stream = props.receive_properties_changed().await?;
+
+           async {
+               while let Some(signal) = props_changed_stream.next().await {
+                   let args = signal.args().unwrap();
+                   let mut data: HashMap<String,String> = HashMap::new();
+                   for (k, v) in args.changed_properties {
+                       if let Some(value) = v.downcast() {
+                           data.insert(String::from(k).to_lowercase(), value);
+                       }
+                   }
+
+                   dbg!(&data);
+                   stream.send_json(&data).await.unwrap();
+               }
+           }.await;
+
+           Ok(())
+       }))
+       .get(|_| async move { Ok("this was not a websocket request") });
+
     app.listen("localhost:3000").await?;
     Ok(())
 }
