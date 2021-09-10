@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.expand_path('../../lib', __FILE__)
+
+require "yast2/dbus/service"
+Yast2::DBus::Service.new.run

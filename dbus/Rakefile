@@ -1,6 +1,0 @@
-$:.unshift File.expand_path('../lib', __FILE__)
-
-task :run do
-  require "yast2/dbus/service"
-  Yast2::DBus::Service.new.run
-end

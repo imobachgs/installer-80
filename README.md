@@ -27,8 +27,8 @@ service by just copying `dbus/share/dbus-yast2.conf` to `/etc/dbus-1/system.d/ya
 
 To run the service, type:
 
-        $ cd dbus
-        $ sudo rake run
+        $ cd yastd
+        $ sudo ruby bin/yastd
 
 ## HTTP API
 
