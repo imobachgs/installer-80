@@ -35,7 +35,7 @@ To run the service, type:
 The HTTP API allows accessing to the YaST D-Bus service. It is written in Rust, so you will need to
 install the compiler. To start the server just type:
 
-        $ cd yast-dbus-proxy
+        $ cd yastd-proxy
         $ cargo run
 
 ## User Interface

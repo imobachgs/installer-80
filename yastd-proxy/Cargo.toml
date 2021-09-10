@@ -1,5 +1,5 @@
 [package]
-name = "yast-dbus-proxy"
+name = "yastd-proxy"
 version = "0.1.0"
 authors = ["Imobach González Sosa <igonzalezsosa@suse.com>"]
 edition = "2018"
