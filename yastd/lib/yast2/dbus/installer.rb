@@ -73,6 +73,11 @@ module Yast2
 
           [disks]
         end
+
+        dbus_method :Install, "out result:b" do
+          Thread.new { installer.install }
+          true
+        end
       end
 
       dbus_interface PROPERTY_INTERFACE do

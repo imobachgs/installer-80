@@ -25,6 +25,7 @@ module Yast2
 
     def initialize
       Yast::Mode.SetUI("commandline")
+      Yast::Mode.SetMode("installation")
       @disks = []
       @languages = []
       @products = []
@@ -71,6 +72,13 @@ module Yast2
 
     def storage_proposal
       storage_manager.proposal&.devices
+    end
+
+    def install
+      Yast::Installation.destdir = "/mnt"
+      change_status(InstallerStatus::PARTITIONING)
+      Yast::WFM.CallFunction(["inst_prepdisk"], [])
+      change_status(InstallerStatus::INSTALLING)
     end
 
     private
