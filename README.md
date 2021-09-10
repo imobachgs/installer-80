@@ -3,10 +3,10 @@
 This repository is just an experiment to build a web-based installer on top of
 [YaST](https://yast.opensuse.org/) infrastructure. It is composed of two parts:
 
-* A D-Bus service based on [ruby-dbus][https://github.com/mvidner/ruby-dbus]
+* A D-Bus service based on [ruby-dbus](https://github.com/mvidner/ruby-dbus)
   that exposes a tiny fraction of YaST capabilities.
-* An HTTP API (based on [Tide][https://github.com/http-rs/tide] and
-  [zbus][https://dbus.pages.freedesktop.org/zbus/] that serves as a proxy for
+* An HTTP API (based on [Tide][http://github.com/http-rs/tide) and
+  [zbus](https://dbus.pages.freedesktop.org/zbus/) that serves as a proxy for
   the web UI.
 * A web-based UI built with [React](https://reactjs.org/) and friends.
 
