@@ -1,6 +1,8 @@
 require "yast"
 require "y2packager/product"
 require "y2storage"
+require "yast2/installer_status"
+require "yast2/dbus/installer_client"
 Yast.import "CommandLine"
 
 # YaST specific code lives under this namespace
@@ -18,11 +20,17 @@ module Yast2
     attr_reader :disk, :product
     attr_accessor :language
 
+    # @return [InstallerStatus]
+    attr_accessor :status
+
     def initialize
       Yast::Mode.SetUI("commandline")
       @disks = []
       @languages = []
       @products = []
+      @status = InstallerStatus::IDLE.id
+      @status_handler = nil
+      @dbus_client = Yast2::DBus::InstallerClient.new
     end
 
     def options
@@ -66,6 +74,12 @@ module Yast2
     end
 
     private
+
+    attr_reader :dbus_client
+
+    def change_status(status)
+      dbus_client.status = status.id
+    end
 
     def probe_software
       Yast.import 'Pkg'

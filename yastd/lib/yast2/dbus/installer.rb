@@ -114,7 +114,10 @@ module Yast2
                   "Interface '#{interface}' not found on object '#{@path}'"
           end
 
-          [installer.options]
+          opts = installer.options.merge("status" => installer.status.id).reduce({}) do |hash, (k, v)|
+            hash.merge(k.capitalize => v)
+          end
+          [opts]
         end
 
         dbus_signal :PropertiesChanged, "interface:s, changed_properties:a{sv}, invalidated_properties:as"
