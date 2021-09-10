@@ -13,10 +13,14 @@ type OptionsMap = HashMap<String,String>;
     default_path = "/org/opensuse/YaST/Installer"
 )]
 pub trait Installer {
+    fn get_installation(&self) -> zbus::Result<HashMap<String,String>>;
     fn get_languages(&self) -> zbus::Result<LanguagesMap>;
     fn get_products(&self) -> zbus::Result<ProductsList>;
     fn get_disks(&self) -> zbus::Result<DisksList>;
     fn get_storage(&self) -> zbus::Result<StorageProposal>;
+
+    #[dbus_proxy(property)]
+    fn status(&self) -> zbus::Result<String>;
 
     #[dbus_proxy(property)]
     fn language(&self) -> zbus::Result<String>;
@@ -44,6 +48,13 @@ impl InstallerClient<'_> {
         let conn = Connection::system()?;
         let proxy = InstallerProxy::new(&conn)?;
         Ok(InstallerClient{ proxy })
+    }
+
+    pub fn get_installation(&self) -> zbus::Result<HashMap<String,String>> {
+        let mut values = HashMap::with_capacity(1);
+        values.insert(String::from("status"), self.proxy.status().unwrap());
+        dbg!("called");
+        Ok(values)
     }
 
     pub fn get_languages(&self) -> zbus::Result<LanguagesMap> {

@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import { storageReducer, l10nReducer, softwareReducer } from './reducers';
+import { installationReducer, storageReducer, l10nReducer, softwareReducer } from './reducers';
 import useRootReducer from 'use-root-reducer';
 import InstallerClient from '../lib/InstallerClient';
 import actionTypes from './actionTypes';
@@ -48,9 +48,10 @@ function useInstallerDispatch() {
 
 function InstallerProvider({ children }) {
   const [state, dispatch] = useRootReducer({
+    installation: React.useReducer(installationReducer, { status: "0" }),
     storage: React.useReducer(storageReducer, { proposal: [], disks: [], disk: null }),
     l10n: React.useReducer(l10nReducer, { languages: [], language: null }),
-    software: React.useReducer(softwareReducer, { products: [], product: null })
+    software: React.useReducer(softwareReducer, { products: [], product: null }),
   });
 
   return (
@@ -60,6 +61,12 @@ function InstallerProvider({ children }) {
       </InstallerDispatchContext.Provider>
     </InstallerStateContext.Provider>
   );
+}
+
+function loadInstallation(dispatch) {
+  installerClient().getInstallation().then(installation => {
+    dispatch({ type: actionTypes.LOAD_INSTALLATION, payload: installation })
+  }).catch(console.error);
 }
 
 function loadSoftware(dispatch) {
@@ -118,11 +125,12 @@ export {
   InstallerProvider,
   useInstallerState,
   useInstallerDispatch,
+  loadInstallation,
   loadStorage,
   loadL10n,
   loadSoftware,
   loadDisks,
-  setOptions,
   loadOptions,
+  setOptions,
   registerWebSocketHandler
 };

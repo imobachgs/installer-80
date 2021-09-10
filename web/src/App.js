@@ -28,12 +28,13 @@ import {
 } from 'lucide-react';
 
 import {
-  useInstallerState, useInstallerDispatch, loadStorage, loadL10n, loadSoftware, loadDisks, setOptions, loadOptions, registerWebSocketHandler
+  useInstallerState, useInstallerDispatch, loadInstallation, loadStorage, loadL10n, loadSoftware,
+  loadDisks, setOptions, loadOptions, registerWebSocketHandler
 } from './context/installer';
 
 function App() {
   const dispatch = useInstallerDispatch();
-  const { storage, l10n, software } = useInstallerState();
+  const { installation, storage, l10n, software } = useInstallerState();
 
   useEffect(() => {
     loadStorage(dispatch);
@@ -41,11 +42,17 @@ function App() {
     loadL10n(dispatch);
     loadSoftware(dispatch);
     loadOptions(dispatch);
+    loadInstallation(dispatch);
     registerWebSocketHandler(event => {
       console.log("WebSocket Event", event);
       const { data } = event;
-      if (Object.keys(JSON.parse(data)).includes("disk")) {
+      const changedKeys = Object.keys(JSON.parse(data));
+      if (changedKeys.includes("disk")) {
         loadStorage(dispatch);
+      }
+
+      if (changedKeys.includes("status")) {
+        loadInstallation(dispatch);
       }
     });
   }, []);

@@ -19,6 +19,7 @@
  * find current contact information at www.suse.com.
  */
 
+const LOAD_INSTALLATION = 'load_installation';
 const LOAD_STORAGE = 'load_storage';
 const LOAD_DISKS = 'load_disks';
 const LOAD_LANGUAGES = 'load_languages';
@@ -27,6 +28,7 @@ const LOAD_PRODUCTS = 'load_products';
 const SET_OPTIONS = 'set_options';
 
 export default {
+  LOAD_INSTALLATION,
   LOAD_STORAGE,
   LOAD_DISKS,
   LOAD_LANGUAGES,

@@ -8,6 +8,16 @@ use async_std::stream::StreamExt;
 
 mod client;
 
+async fn get_installation(mut _req: Request<()>) -> tide::Result {
+    let client = InstallerClient::new()?;
+    let json_body = serde_json::to_string(&client.get_installation()?)?;
+
+    Ok(Response::builder(StatusCode::Ok)
+       .body(json_body)
+       .content_type(mime::JSON)
+       .build())
+}
+
 async fn get_products(mut _req: Request<()>) -> tide::Result {
     let client = InstallerClient::new()?;
     let json_body = serde_json::to_string(&client.get_products()?)?;
@@ -94,6 +104,7 @@ async fn main() -> tide::Result<()> {
         .allow_origin(Origin::from("*"))
         .allow_credentials(false);
     app.with(cors);
+    app.at("/installation.json").get(get_installation);
     app.at("/products.json").get(get_products);
     app.at("/languages.json").get(get_languages);
     app.at("/storage.json").get(get_storage);

@@ -33,6 +33,11 @@ export default class InstallerClient {
     this.socket.addEventListener("message", handler);
   }
 
+  async getInstallation() {
+    const { data } = await axios.get(`${this.url}/installation.json`);
+    return data;
+  }
+
   async getProducts() {
     const { data } = await axios.get(`${this.url}/products.json`);
     return data;

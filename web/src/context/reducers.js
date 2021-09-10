@@ -21,6 +21,22 @@
 
 import actionTypes from './actionTypes';
 
+export function installationReducer(state, action) {
+  switch (action.type) {
+    case actionTypes.LOAD_INSTALLATION: {
+      return { ...state, ...action.payload }
+    }
+
+    case actionTypes.SET_STATUS: {
+      return { ...state, status: action.payload }
+    }
+
+    default: {
+      return state;
+    }
+  }
+}
+
 export function softwareReducer(state, action) {
   switch (action.type) {
     case actionTypes.LOAD_PRODUCTS: {
