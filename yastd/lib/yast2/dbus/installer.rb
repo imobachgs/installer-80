@@ -97,8 +97,9 @@ module Yast2
           end
 
           begin
-            installer.send("#{propname.downcase}=", value.to_s)
-            self.PropertiesChanged(interface, { propname => value }, [])
+            s_value = value.to_s
+            installer.send("#{propname.downcase}=", s_value)
+            self.PropertiesChanged(interface, { propname => s_value }, [])
           rescue Yast2::Installer::InvalidValue
             raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
                   "Value '#{value}' not valid for '#{interface}.#{propname}' on object '#{@path}'"
