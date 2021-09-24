@@ -45,7 +45,7 @@ module Yast2
       def run
         bus = ::DBus.system_bus
         service = bus.request_service(SERVICE_NAME)
-        installer_obj = Yast2::DBus::Installer.new(build_installer, OBJECT_PATH)
+        installer_obj = Yast2::DBus::Installer.new(build_installer, logger, OBJECT_PATH)
         service.export(installer_obj)
         dbus_loop = ::DBus::Main.new
         dbus_loop << bus

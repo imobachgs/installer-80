@@ -25,24 +25,29 @@ module Yast2
     #
     # @see https://rubygems.org/gems/ruby-dbus
     class Installer < ::DBus::Object
-      attr_reader :installer
+      attr_reader :installer, :logger
 
       PROPERTY_INTERFACE = "org.freedesktop.DBus.Properties"
       INSTALLER_INTERFACE = "org.opensuse.YaST.Installer"
 
       # @param installer [Yast2::Installer] YaST installer instance
       # @param args [Array<Object>] ::DBus::Object arguments
-      def initialize(installer, *args)
+      def initialize(installer, logger, *args)
         @installer = installer
+        @logger = logger
         super(*args)
       end
 
       dbus_interface INSTALLER_INTERFACE do
         dbus_method :GetLanguages, "out langs:a{sas}" do
+          logger.info "GetLanguages"
+
           [installer.languages]
         end
 
         dbus_method :GetProducts, "out products:aa{ss}" do
+          logger.info "GetProducts"
+
           products = installer.products.map do |product|
             { "name" => product.name, "display_name" => product.display_name }
           end
@@ -50,6 +55,8 @@ module Yast2
         end
 
         dbus_method :GetStorage, "out proposal:aa{ss}" do
+          logger.info "GetStorage"
+
           proposal = installer.storage_proposal.filesystems.map do |fs|
             blk_device = fs.blk_devices.first
             {
@@ -63,6 +70,8 @@ module Yast2
         end
 
         dbus_method :GetDisks, "out disks:aa{ss}" do
+          logger.info "GetDisks"
+
           disks = installer.disks.map do |disk|
             {
               "name"  => disk.name,
@@ -75,6 +84,8 @@ module Yast2
         end
 
         dbus_method :Install, "out result:b" do
+          logger.info "Install"
+
           Thread.new { installer.install }
           true
         end
@@ -82,6 +93,8 @@ module Yast2
 
       dbus_interface PROPERTY_INTERFACE do
         dbus_method :Get, "in interface:s, in propname:s, out value:v" do |interface, propname|
+          logger.info "Get(#{interface}, #{propname})"
+
           if interface != INSTALLER_INTERFACE
             raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
                   "Interface '#{interface}' not found on object '{@path}'"
@@ -96,6 +109,8 @@ module Yast2
         end
 
         dbus_method :Set, "in interface:s, in propname:s, in value:v" do |interface, propname, value|
+          logger.info "Set(#{interface}, #{propname}, #{value})"
+
           unless interface == INSTALLER_INTERFACE
             raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
                   "Interface '#{interface}' not found on object '#{@path}'"
@@ -115,13 +130,15 @@ module Yast2
         end
 
         dbus_method :GetAll, "in interface:s, out value:a{sv}" do |interface|
+          logger.info "GetAll(#{interface})"
+
           unless interface == INSTALLER_INTERFACE
             raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
                   "Interface '#{interface}' not found on object '#{@path}'"
           end
 
-          props = installer.options.merge("status" => installer.status.id.to_s)
-          normalized_props = props.reduce({}) { |h, (k, v)| hash.merge(k.capitalize => v) }
+          props = installer.options.merge("status" => installer.status.to_s)
+          normalized_props = props.reduce({}) { |h, (k, v)| h.merge(k.capitalize => v) }
           [normalized_props]
         end
 
