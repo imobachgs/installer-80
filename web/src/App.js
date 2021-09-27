@@ -10,6 +10,7 @@ import {
   Spacer,
   Divider,
   Button,
+  Progress,
   theme,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -25,12 +26,15 @@ import {
   Archive,
   HardDrive,
   Languages,
+  Clock
 } from 'lucide-react';
 
 import {
   useInstallerState, useInstallerDispatch, loadInstallation, loadStorage, loadL10n, loadSoftware,
-  loadDisks, setOptions, loadOptions, registerWebSocketHandler
+  loadDisks, setOptions, loadOptions, registerWebSocketHandler, startInstallation
 } from './context/installer';
+
+const STEPS = 3; // fake number of installation steps
 
 function App() {
   const dispatch = useInstallerDispatch();
@@ -56,6 +60,8 @@ function App() {
       }
     });
   }, []);
+
+  const isInstalling = installation.status != "0";
 
   return (
     <ChakraProvider theme={theme}>
@@ -91,13 +97,22 @@ function App() {
                 onChange={(product) => setOptions({ product }, dispatch)}
               />
             </Category>
+
+            { isInstalling &&
+              <Category title="Progress" icon={Clock} >
+                <Progress hasStripe value={Math.round(parseInt(installation.status) / STEPS * 100)} />
+              </Category> }
           </VStack>
 
           <Flex p={20}>
             <Spacer />
-            <Button colorScheme="teal" size="lg">
+            <Button colorScheme="teal"
+                    size="lg"
+                    disabled={isInstalling}
+                    onClick={() => startInstallation(dispatch)}>
               Install
             </Button>
+            { isInstalling }
           </Flex>
         </Box>
     </ChakraProvider>

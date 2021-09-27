@@ -83,10 +83,13 @@ module Yast2
           [disks]
         end
 
-        dbus_method :Install, "out result:b" do
-          logger.info "Install"
+        dbus_method :Start, "out result:b" do
+          logger.info "Start"
 
-          Thread.new { installer.install }
+          Thread.new do
+            logger.info "Starting the installation from another thread"
+            installer.install
+          end
           true
         end
       end

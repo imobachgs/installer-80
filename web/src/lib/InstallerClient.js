@@ -66,4 +66,8 @@ export default class InstallerClient {
   async setOptions(opts) {
     return await axios.put(`${this.url}/options.json`, opts);
   }
+
+  async startInstallation() {
+    return await axios.put(`${this.url}/installation.json`, { action: 'start' });
+  }
 }

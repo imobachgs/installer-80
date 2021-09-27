@@ -109,6 +109,10 @@ function registerWebSocketHandler(handler) {
   installerClient().onMessage(handler);
 }
 
+function startInstallation(_dispatch) {
+  installerClient().startInstallation();
+}
+
 /**
  * FIXME: needed to use a function in order to delay building the object and
  * make the tests to work
@@ -132,5 +136,6 @@ export {
   loadDisks,
   loadOptions,
   setOptions,
+  startInstallation,
   registerWebSocketHandler
 };

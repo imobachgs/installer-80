@@ -18,6 +18,17 @@ async fn get_installation(mut _req: Request<()>) -> tide::Result {
        .build())
 }
 
+async fn handle_installation(mut _req: Request<()>) -> tide::Result {
+    // TODO: implement 'start' and 'cancel' actions. For the time being, it will
+    // always start the installation.
+    let client = InstallerClient::new()?;
+    let json_body = serde_json::to_string(&client.start()?)?;
+    Ok(Response::builder(StatusCode::Ok)
+       .body(json_body)
+       .content_type(mime::JSON)
+       .build())
+}
+
 async fn get_products(mut _req: Request<()>) -> tide::Result {
     let client = InstallerClient::new()?;
     let json_body = serde_json::to_string(&client.get_products()?)?;
@@ -105,6 +116,7 @@ async fn main() -> tide::Result<()> {
         .allow_credentials(false);
     app.with(cors);
     app.at("/installation.json").get(get_installation);
+    app.at("/installation.json").put(handle_installation);
     app.at("/products.json").get(get_products);
     app.at("/languages.json").get(get_languages);
     app.at("/storage.json").get(get_storage);

@@ -18,6 +18,7 @@ module Yast2
 
     attr_reader :disks, :languages, :products
     attr_reader :disk, :product
+    attr_reader :logger
     attr_accessor :language
 
     # @return [InstallerStatus]
@@ -32,6 +33,7 @@ module Yast2
       @status = InstallerStatus::IDLE.id
       @status_handler = nil
       @dbus_client = Yast2::DBus::InstallerClient.new
+      @logger = Logger.new(STDOUT)
     end
 
     def options
@@ -76,9 +78,16 @@ module Yast2
 
     def install
       Yast::Installation.destdir = "/mnt"
+      logger.info "Installing(partitioning)"
       change_status(InstallerStatus::PARTITIONING)
-      Yast::WFM.CallFunction(["inst_prepdisk"], [])
+      # Yast::WFM.CallFunction(["inst_prepdisk"], [])
+      sleep 5
+      # Install software
+      logger.info "Installing(installing software)"
       change_status(InstallerStatus::INSTALLING)
+      sleep 5
+      logger.info "Installing(finished)"
+      change_status(InstallerStatus::IDLE)
     end
 
     private

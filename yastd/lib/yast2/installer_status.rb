@@ -41,6 +41,7 @@ module Yast2
     IDLE = new(0, "Idle")
     PARTITIONING = new(1, "Partitioning")
     INSTALLING = new(2, "Installing")
-    ERROR = new(3, "Error")
+    FINISHED = new(3, "Finished")
+    ERROR = new(4, "Error")
   end
 end
