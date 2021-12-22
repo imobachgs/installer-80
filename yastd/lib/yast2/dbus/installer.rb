@@ -85,6 +85,13 @@ module Yast2
           [disks]
         end
 
+        dbus_method :Probe, "out result:b" do
+          logger.info "Probe"
+
+          installer.probe
+          true
+        end
+
         dbus_method :Start, "out result:b" do
           logger.info "Start"
 

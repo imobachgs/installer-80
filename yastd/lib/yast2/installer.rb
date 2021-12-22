@@ -26,7 +26,7 @@ module Yast2
     attr_reader :disks, :languages, :products
     attr_reader :disk, :product
     attr_reader :logger
-    attr_accessor :language
+    attr_reader :language
 
     # @return [InstallerStatus]
     attr_accessor :status
@@ -61,10 +61,19 @@ module Yast2
     # * Simplified storage probing
     #
     # The initialization of these subsystems should probably live in a different place.
+    #
+    # @return [Boolean] true if the probing process ended successfully; false otherwise.
     def probe
+      change_status(InstallerStatus::PROBING)
       probe_languages
       probe_software
       probe_storage
+      true
+    rescue StandardError => e
+      logger.error "Probing error: #{e.inspect}"
+      false
+    ensure
+      change_status(InstallerStatus::IDLE)
     end
 
     def disk=(name)
@@ -127,12 +136,14 @@ module Yast2
     #
     # @return [Hash]
     def probe_languages
+      logger.info "Probing languages"
       Yast.import "Language"
       @languages = Yast::Language.GetLanguagesMap(true)
       self.language = DEFAULT_LANGUAGE
     end
 
     def probe_storage
+      logger.info "Probing storage"
       storage_manager.probe
       @disks = storage_manager.probed.disks
       self.disk = @disks.first&.name
