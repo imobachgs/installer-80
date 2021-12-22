@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "yast"
 require "y2packager/product"
 require "y2storage"
@@ -11,10 +13,15 @@ module Yast2
   #
   # It is responsible for orchestrating the installation process. Additionally,
   # it serves as an entry point to other APIs.
+  #
+  # @example Get the current storage proposal
+  #   installer = Installer.new
+  #   installer.probe
+  #   installer.storage_proposal #=> #<Y2Storage::Devicegraph>
   class Installer
     class InvalidValue < StandardError; end
 
-    DEFAULT_LANGUAGE = "en_US".freeze
+    DEFAULT_LANGUAGE = "en_US"
 
     attr_reader :disks, :languages, :products
     attr_reader :disk, :product
@@ -90,7 +97,7 @@ module Yast2
       change_status(InstallerStatus::IDLE)
     end
 
-    private
+  private
 
     attr_reader :dbus_client
 
@@ -99,9 +106,10 @@ module Yast2
     end
 
     def probe_software
-      Yast.import 'Pkg'
-      Yast.import 'PackageLock'
-      Yast::Pkg.TargetInitialize('/')
+      logger.info "Probing software"
+      Yast.import "Pkg"
+      Yast.import "PackageLock"
+      Yast::Pkg.TargetInitialize("/")
       Yast::Pkg.TargetLoad
       Yast::Pkg.SourceRestore
       Yast::Pkg.SourceLoad
@@ -135,9 +143,10 @@ module Yast2
 
       proposal = Y2Storage::GuidedProposal.initial(
         devicegraph: clean_probed,
-        settings: settings
+        settings:    settings
       )
       return false if proposal.failed?
+
       storage_manager.proposal = proposal
       true
     end

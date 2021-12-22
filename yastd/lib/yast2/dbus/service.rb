@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) [2021] SUSE LLC
 #
 # All Rights Reserved.
@@ -33,10 +35,10 @@ module Yast2
     # @see Yast2::DBus::Installer
     class Service
       # @return [String] service name
-      SERVICE_NAME = "org.opensuse.YaST".freeze
+      SERVICE_NAME = "org.opensuse.YaST"
 
       # @return [String] D-Bus object path
-      OBJECT_PATH = "/org/opensuse/YaST/Installer".freeze
+      OBJECT_PATH = "/org/opensuse/YaST/Installer"
 
       def initialize(logger = nil)
         @logger = logger || Logger.new(STDOUT)

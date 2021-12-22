@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) [2021] SUSE LLC
 #
 # All Rights Reserved.
@@ -19,13 +21,14 @@
 
 # YaST specific code lives under this namespace
 module Yast2
+  # This class represents the installer status
   class InstallerStatus
     class << self
       # Returns all the possible installer statuses
       #
       # @return [Array<InstallerStatus>] Installer status
       def all
-        @all ||= self.constants
+        @all ||= constants
           .map { |c| InstallerStatus.const_get(c) }
           .select { |c| c.is_a?(InstallerStatus) }
       end

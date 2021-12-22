@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Copyright (c) [2021] SUSE LLC
 #
@@ -22,12 +24,22 @@ require "dbus"
 
 module Yast2
   module DBus
+    # D-Bus client for the installer object
+    #
+    # It offers a higher level API to the /org/opensuse/YaST/Installer object.
+    #
+    # @example Set the installer status
+    #   client = InstallerClient.new
+    #   client.status = InstallerStatus::IDLE.id
     class InstallerClient
+      SERVICE_NAME = "org.opensuse.YaST"
+      OBJECT_PATH = "/org/opensuse/YaST/Installer"
+      IFACE = "org.opensuse.YaST.Installer"
 
-      SERVICE_NAME = "org.opensuse.YaST".freeze
-      OBJECT_PATH = "/org/opensuse/YaST/Installer".freeze
-      IFACE = "org.opensuse.YaST.Installer".freeze
-
+      # Set's the installer status
+      #
+      # @param id [Integer] Installer status
+      # @see InstallerStatus
       def status=(id)
         installer_obj["org.freedesktop.DBus.Properties"].Set(
           IFACE, "Status", id
@@ -36,6 +48,8 @@ module Yast2
 
     private
 
+      # @return [DBus::ProxyObject] Returns a proxy object for
+      #   "/org/opensuse/YaST/Installer"
       def installer_obj
         return @installer_obj if @installer_obj
 

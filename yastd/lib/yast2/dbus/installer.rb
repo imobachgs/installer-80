@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) [2021] SUSE LLC
 #
 # All Rights Reserved.
@@ -100,14 +102,14 @@ module Yast2
 
           if interface != INSTALLER_INTERFACE
             raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
-                  "Interface '#{interface}' not found on object '{@path}'"
+              "Interface '#{interface}' not found on object '{@path}'"
           end
 
           begin
-            installer.send("#{propname.downcase}").to_s
+            installer.send(propname.downcase.to_s).to_s
           rescue NoMethodError
             raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
-                  "Property '#{interface}.#{propname}' not found on object '#{@path}'"
+              "Property '#{interface}.#{propname}' not found on object '#{@path}'"
           end
         end
 
@@ -116,7 +118,7 @@ module Yast2
 
           unless interface == INSTALLER_INTERFACE
             raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
-                  "Interface '#{interface}' not found on object '#{@path}'"
+              "Interface '#{interface}' not found on object '#{@path}'"
           end
 
           begin
@@ -125,10 +127,10 @@ module Yast2
             self.PropertiesChanged(interface, { propname => s_value }, [])
           rescue Yast2::Installer::InvalidValue
             raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
-                  "Value '#{value}' not valid for '#{interface}.#{propname}' on object '#{@path}'"
+              "Value '#{value}' not valid for '#{interface}.#{propname}' on object '#{@path}'"
           rescue NoMethodError
             raise ::DBus.error("org.freedesktop.DBus.Error.InvalidArgs"),
-                  "Property '#{interface}.#{propname}' not found on object '#{@path}'"
+              "Property '#{interface}.#{propname}' not found on object '#{@path}'"
           end
         end
 
@@ -137,7 +139,7 @@ module Yast2
 
           unless interface == INSTALLER_INTERFACE
             raise ::DBus.error("org.freedesktop.DBus.Error.UnknownInterface"),
-                  "Interface '#{interface}' not found on object '#{@path}'"
+              "Interface '#{interface}' not found on object '#{@path}'"
           end
 
           props = installer.options.merge("status" => installer.status.to_s)
@@ -145,7 +147,8 @@ module Yast2
           [normalized_props]
         end
 
-        dbus_signal :PropertiesChanged, "interface:s, changed_properties:a{sv}, invalidated_properties:as"
+        dbus_signal :PropertiesChanged,
+          "interface:s, changed_properties:a{sv}, invalidated_properties:as"
       end
     end
   end

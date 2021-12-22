@@ -1,8 +1,10 @@
-source 'https://rubygems.org'
+# frozen_string_literal: true
 
-gem 'rake'
-gem 'ruby-dbus'
+source "https://rubygems.org"
+
+gem "rake"
+gem "ruby-dbus"
 
 # Required by YaST
-gem 'fast_gettext'
-gem 'cheetah'
+gem "cheetah"
+gem "fast_gettext"
