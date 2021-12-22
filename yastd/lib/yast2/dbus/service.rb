@@ -60,8 +60,10 @@ module Yast2
       attr_reader :logger
 
       def build_installer
-        installer = Yast2::Installer.new
-        logger.info "Probing and proposing default options"
+        installer = Yast2::Installer.new(
+          dbus_client: Yast2::DBus::InstallerClient.new,
+          logger:      logger
+        )
         installer.probe
         installer
       end
