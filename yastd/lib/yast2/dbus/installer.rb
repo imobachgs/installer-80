@@ -95,10 +95,7 @@ module Yast2
         dbus_method :Start, "out result:b" do
           logger.info "Start"
 
-          Thread.new do
-            logger.info "Starting the installation from another thread"
-            installer.install
-          end
+          installer.install
           true
         end
       end
