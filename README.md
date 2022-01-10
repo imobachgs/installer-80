@@ -1,3 +1,7 @@
+# Deprecation Notice
+
+This repository has been archived and replaced with https://github.com/yast/the-installer.
+
 # $INSTALLER:80
 
 This repository is just an experiment to build a web-based installer on top of
